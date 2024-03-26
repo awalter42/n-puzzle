@@ -81,6 +81,7 @@ if __name__ == '__main__':
 	parser.add_argument("-m", "--manhattan", action="store_true", default=False, help='manhattan distance')
 	parser.add_argument("-H", "--hamming", action="store_true", default=False, help='hamming distance')
 	parser.add_argument("-l", "--linear", action="store_true", default=False, help='manhattan distance with linear conflicts')
+	parser.add_argument("-M", "--moves", action="store_true", default=False, help='list of moves instead of every state after each move')
 	args = parser.parse_args()
 
 	if (args.manhattan and args.hamming) or (args.manhattan and args.linear) or (args.linear and args.hamming):
@@ -115,6 +116,10 @@ if __name__ == '__main__':
 	print (f"The cost was {bcolors.BLUE}{len(moves)}{bcolors.ENDC} moves\n")
 	print (f"{bcolors.PURPLE}{selection}{bcolors.ENDC} states were selected in the opened set")
 	print (f"{bcolors.ORANGE}{space}{bcolors.ENDC} states were represented in the memory at the same time\n")
+
+	if args.moves:
+		print(moves)
+		exit()
 
 	for l in puzzle:
 		print(' '.join(l))
