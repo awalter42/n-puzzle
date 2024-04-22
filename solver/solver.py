@@ -148,7 +148,6 @@ def solv(puzzle: list, size: int, goal: list, heuristic: int) -> list:
 	all_states = [puzzle, ]
 	moves = [[]]
 	scores = [getScore(puzzle, goal, size, heuristic) * (size - 2), ]
-	print(scores)
 	action = ''
 	selection = 0
 
