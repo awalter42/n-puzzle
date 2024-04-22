@@ -1,3 +1,5 @@
+#https://en.wikipedia.org/wiki/15_Puzzle
+
 
 def taxicabDistance(flatten: list, goal: list, size: int)->int:
 	p_index = flatten.index('0')

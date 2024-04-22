@@ -1,3 +1,5 @@
+#https://en.wikipedia.org/wiki/Admissible_heuristic
+
 import sys
 import argparse
 from time import time

@@ -1,6 +1,9 @@
 #https://theory.stanford.edu/~amitp/GameProgramming/Variations.html
 #https://en.wikipedia.org/wiki/A*_search_algorithm
 
+#https://en.wikipedia.org/wiki/Hamming_distance
+#https://en.wikipedia.org/wiki/Taxicab_geometry
+
 def findCoordinates(puzzle: list, size: int, n: str):
 	for y in range(size):
 		for x in range(size):
@@ -19,6 +22,8 @@ def manhattanDistance(flatten: list, goal: list, size: int, element: int):
 def	misplacedTiles(flatten: list, goal: list):
 	score = 0
 	for i, t in enumerate(flatten):
+		if int(t) == 0:
+			continue
 		if t != str(goal[i]):
 			score += 1
 	return score
@@ -30,14 +35,18 @@ def	linearConflict(flatten: list, puzzle: list, goal: list, size: list):
 
 	for y, l in enumerate(puzzle):
 		for i, e in enumerate(l):
+			if int(e) == 0:
+				continue
 			try:
 				goal_index = built_goal[y].index(int(e))
 				if goal_index > i:
 					for element in l[i:goal_index + 1]:
+						if int(element) == 0:
+							continue
 						try:
 							ele_index = built_goal[y].index(int(element))
 							if ele_index <= i:
-								nb_conflict += 1
+								nb_conflict += 2
 						except:
 							pass
 			except:
@@ -55,27 +64,27 @@ def	linearConflict(flatten: list, puzzle: list, goal: list, size: list):
 						try:
 							ele_index = r_goal[y].index(int(element))
 							if ele_index <= i:
-								nb_conflict += 1
+								nb_conflict += 2
 						except:
 							pass
 			except:
 				pass
 
-	return (nb_conflict * 2)
+	return (nb_conflict)
 
 			
 def getScore(puzzle: list, goal: list, size: int, heuristic: int):
 	score = 0
 	flatten = [j for sub in puzzle for j in sub]
 	if heuristic == 0:
-		for i in range(size**2):
+		for i in range(1, size**2):
 			score += manhattanDistance(flatten, goal, size, i)
 
 	elif heuristic == 1:
 		score = misplacedTiles(flatten, goal)
 
 	elif heuristic == 2:
-		for i in range(size**2):
+		for i in range(1, size**2):
 			score += manhattanDistance(flatten, goal, size, i)
 		score += linearConflict(flatten, puzzle, goal, size)
 
@@ -116,7 +125,7 @@ def insertState(temp: list, goal: list, size: int, states: list, all_states: lis
 	index = states.index(copy)
 	new_move = moves[index][:]
 	new_move.append(action)
-	new_score = getScore(temp, goal, size, heuristic) * (size-2) + len(new_move)
+	new_score = getScore(temp, goal, size, heuristic) * (size - 2) + len(new_move)
 	for i, s in enumerate(scores):
 		if new_score <= s:
 			states.insert(i, temp)
@@ -138,7 +147,8 @@ def solv(puzzle: list, size: int, goal: list, heuristic: int) -> list:
 	states = [puzzle, ]
 	all_states = [puzzle, ]
 	moves = [[]]
-	scores = [getScore(puzzle, goal, size, heuristic) * (size-2), ]
+	scores = [getScore(puzzle, goal, size, heuristic) * (size - 2), ]
+	print(scores)
 	action = ''
 	selection = 0
 
